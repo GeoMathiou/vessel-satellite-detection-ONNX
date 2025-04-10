@@ -1,0 +1,7 @@
+{
+    "/dhus": {
+      "target": "https://scihub.copernicus.eu",
+      "secure": true,
+      "changeOrigin": true
+    }
+  }
