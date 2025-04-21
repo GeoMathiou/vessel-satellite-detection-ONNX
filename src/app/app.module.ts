@@ -9,9 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 import { SearchComponent } from './search/search.component';
+import { SatelliteViewerComponent } from './satellite-viewer/satellite-viewer.component';
 
 @NgModule({
-  declarations: [AppComponent, MapComponent, SearchComponent],
+  declarations: [AppComponent, MapComponent, SearchComponent, SatelliteViewerComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

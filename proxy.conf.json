@@ -1,7 +1,10 @@
 {
-    "/dhus": {
-      "target": "https://scihub.copernicus.eu",
-      "secure": true,
-      "changeOrigin": true
+  "/auth-proxy": {
+    "target": "https://identity.dataspace.copernicus.eu",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/auth-proxy": ""
     }
   }
+}
