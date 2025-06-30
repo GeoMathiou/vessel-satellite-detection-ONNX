@@ -1,10 +1,11 @@
 export const environment = {
     production: false,
+    authTokenUrl: '/auth-proxy/auth/realms/CDSE/protocol/openid-connect/token',
     copernicus: {
-      username: 'csd4419@csd.uoc.gr', // Replace with your Copernicus email
-      password: 'Milospapagalos1!',  // Replace with your Copernicus password
-      clientId:   'cdse-public',
-      OathId: 'sh-4e1e4dad-2eac-4bce-996f-be4ef28f7eff',
-      OathPass: 'OG2M1tZ58YaduSUEPL0rPySJtWw0gYt9'
+      username: 'xxxxxxxx', // Replace with your Copernicus email
+      password: 'xxxxxxxx',  // Replace with your Copernicus password
+      clientId: 'cdse-public',
+      OathId:   'xxxxxxxxxxxxxxx',  // Replace with your Copernicus project OathId
+      OathPass: 'xxxxxxxxxxxxxxx'        // Replace with your Copernicus project OathPass
     }
   };

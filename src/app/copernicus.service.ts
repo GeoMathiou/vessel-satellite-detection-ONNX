@@ -13,7 +13,7 @@ export class CopernicusService {
     function setup() {
       return {
         input: ["B02", "B03", "B04"],
-        output: { bands: 3, sampleType: "AUTO" }
+        output: { bands: 3 }
       };
     }
     function evaluatePixel(s) {
@@ -21,62 +21,7 @@ export class CopernicusService {
     }
     `;
 
-    bbox: [number, number, number, number] = [ 25.133,  35.340,  25.160,  35.354  ]; //Heraklion
-
-
   constructor(private http: HttpClient, private authService: AuthService) {}
-
-  async fetchLatestImage(): Promise<Blob> {
-    const token = await this.authService.getAccessToken();
-
-    const request = {
-      input: {
-        bounds: {
-          bbox: this.bbox,
-          properties: {
-            crs: "http://www.opengis.net/def/crs/OGC/1.3/CRS84"
-          }
-        },
-        data: [{
-          type: "sentinel-2-l2a",
-          dataFilter: {
-            timeRange: {
-              from: "2025-04-16T00:00:00Z",
-              to: "2025-04-16T23:59:59Z"
-            }
-          }
-        }]
-      },
-      output: {
-        width: 1920,
-        height: 1080,
-        responses: [{
-          identifier: "default",
-          format: {
-            type: "image/png"
-          }
-        }]
-      },
-      evalscript: this.EVALSCRIPT
-
-    };
-    
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'image/png'  
-    });
-
-    return this.http
-      .post('https://sh.dataspace.copernicus.eu/api/v1/process', request, {
-        headers,
-        responseType: 'blob'
-      })
-      .toPromise() as Promise<Blob>;
-  }
-
-
 
   async fetchImageForBBox(
     bbox: [number,number,number,number],
@@ -94,8 +39,8 @@ export class CopernicusService {
           type: 'sentinel-2-l2a',
           dataFilter: {
             timeRange: {
-              from: "2025-04-16T00:00:00Z",
-              to: "2025-04-16T23:59:59Z"
+              from: "2025-06-05T00:00:00Z",   // Adjust the date range as needed
+              to: "2025-06-05T23:59:59Z"
             }
           }
         }]

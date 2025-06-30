@@ -1,0 +1,280 @@
+<div class="max-w-6xl mx-auto p-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Info Card -->
+    <div
+      class="col-span-1 bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-2xl shadow-xl"
+    >
+      <h2 class="text-3xl font-extrabold text-slate-800 mb-4">
+        Ship Detection App
+      </h2>
+
+      <div class="flex flex-col justify-between gap-4">
+        <p class="text-slate-600 leading-relaxed font-bold">
+          Detect ships in open‐sea satellite imagery using a trained,
+          lightweight YOLOv5 model.
+        </p>
+
+        <p class="text-slate-600 leading-relaxed">
+          The app retrieves user or Sentinel-2 Satellite images via the Copernicus API. The model is trained on the
+          <a
+            href="https://github.com/WindVChen/LEVIR-Ship"
+            target="_blank"
+            class="text-emerald-600 hover:underline"
+          >LEVIR-Ship</a>
+          dataset, exported to ONNX and deployed using onnxruntime-web. Detections are filtered by a configurable confidence threshold. At threshold 0.44, The model achieves <span class="font-bold"> mAP of 78% with 68% recall and 75% precision</span>.
+        </p>
+
+        <div class="text-slate-600 leading-relaxed space-y-1">
+          <p>
+            <span class="font-semibold text-slate-800">Author:</span>
+            <a
+              href="https://github.com/GeoMathiou"
+              target="_blank"
+              class="text-blue-600 hover:underline"
+            >
+              Giorgos Mathioudakis
+            </a>
+          </p>
+          <p>
+            <span class="font-semibold text-slate-800">Supervisor:</span> Prof.
+            Tsagkatakis
+          </p>
+          <p>
+            <span class="font-semibold text-slate-800">University:</span>
+            Department of Computer Science, University of Crete
+          </p>
+          <p>
+            <span class="font-semibold text-slate-800">Thesis:</span>
+            <a
+              href="assets/thesis.pdf"
+              target="_blank"
+              class="text-blue-600 hover:underline"
+            >
+              Download PDF
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BBOX + Presets -->
+    <div class="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div
+        class="flex flex-col  gap-4 bg-white p-6 rounded-2xl shadow-lg"
+      >
+        <div>
+          <h4 class="text-lg font-bold text-emerald-700 mb-4">
+            Set Bounding Box
+          </h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700"
+                >Min Lon</label
+              >
+              <input
+                type="number"
+                step="0.0001"
+                [(ngModel)]="bbox[0]"
+                class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700"
+                >Min Lat</label
+              >
+              <input
+                type="number"
+                step="0.0001"
+                [(ngModel)]="bbox[1]"
+                class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700"
+                >Max Lon</label
+              >
+              <input
+                type="number"
+                step="0.0001"
+                [(ngModel)]="bbox[2]"
+                class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700"
+                >Max Lat</label
+              >
+              <input
+                type="number"
+                step="0.0001"
+                [(ngModel)]="bbox[3]"
+                class="mt-1 w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+              />
+            </div>
+          </div>
+
+          <p class="text-sm text-green-900 mt-2"> *Date is set at 06/05/2025</p>
+
+          <div class="mt-6 space-y-2">
+            <h5 class="text-sm font-medium text-slate-700">Quick Presets</h5>
+            <div class="flex flex-wrap gap-2">
+              <button
+                class="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-full text-sm shadow-sm"
+                (click)="setBBox([25.133, 35.34, 25.16, 35.354])"
+              >
+                Heraklion Port 3km²
+              </button>
+              <button
+                class="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-full text-sm shadow-sm"
+                (click)="setBBox([23.497181, 37.870788, 23.597946, 37.923347])"
+              >
+                Salamina 51 km²
+              </button>
+              <button
+                class="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-full text-sm shadow-sm"
+                (click)="setBBox([23.497181, 37.837581, 23.671246, 37.923347])"
+              >
+                Salamina 146 km²
+              </button>
+              <button
+                class="px-3 py-1 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-full text-sm shadow-sm"
+                (click)="setBBox([23.525162, 37.899646, 23.560696, 37.918201])"
+              >
+                Salamina 6 km²
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition"
+          (click)="loadImage()"
+          [disabled]="!modelReady || detecting"
+        >
+          {{ modelReady ? "Load Satellite Image" : "Loading Model…" }}
+        </button>
+      </div>
+
+      <!-- Source & Detection -->
+      <div class="grid grid-cols-1 gap-6">
+        <!-- Image Source -->
+        <div class="bg-white p-4 rounded-xl shadow-md">
+          <h4 class="text-lg font-bold text-amber-700 mb-3">Image Source</h4>
+          <div class="flex flex-col gap-3">
+            <label
+              class="cursor-pointer flex-1 flex justify-center items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                (change)="onFileSelected($event)"
+                [disabled]="!modelReady || detecting"
+              />
+              Upload Image
+            </label>
+            <button
+              class="flex-1 px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition"
+              (click)="useTestImage('assets/test1.png')"
+              [disabled]="!modelReady || detecting"
+            >
+              Test image 1
+            </button>
+            <button
+              class="flex-1 px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition"
+              (click)="useTestImage('assets/test2.jpg')"
+              [disabled]="!modelReady || detecting"
+            >
+              Test image 2
+            </button>
+            <button
+              class="flex-1 px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition"
+              (click)="useTestImage('assets/test5.JPG')"
+              [disabled]="!modelReady || detecting"
+            >
+              Test image 3
+            </button>
+          </div>
+        </div>
+        
+        <!-- Detection Controls -->
+        <div class="bg-white p-4 rounded-xl shadow-md">
+          <h4 class="text-lg font-bold text-red-600 mb-3">Detection</h4>
+          <div class="flex flex-col justify-between gap-4">
+            <div class="flex items-center gap-2">
+              <div class="flex flex-col gap-2">
+                <label
+                  for="confidenceThreshold"
+                  class="font-medium text-slate-700"
+                  >Confidence Threshold</label
+                >
+                <input
+                  id="confidenceThreshold"
+                  type="number"
+                  [(ngModel)]="confidenceThreshold"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  class="px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                />
+                <p class="text-sm text-red-900"> *Best value is 0.44 after training</p>
+              </div>
+            </div>
+
+
+            <button
+              class="flex justify-center items-center gap-2 px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white font-medium rounded-lg transition"
+              (click)="loadImageAndSave()"
+              [disabled]="!modelReady || detecting"
+            >
+              ⬇️ Save Satellite Image
+            </button>
+            <button
+              class="w-full flex justify-center items-center gap-2 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition"
+              (click)="runDetection()"
+              [disabled]="!modelReady || !imageReady || detecting"
+            >
+              🚢 {{ detecting ? "Detecting…" : "Detect Ships" }}
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error & Preview -->
+    <div class="col-span-3">
+      <div *ngIf="error" class="text-center text-red-600 font-medium">
+        {{ error }}
+      </div>
+      <div *ngIf="modelReady" class="mt-4 flex flex-col space-y-2 text-sm text-gray-700">
+        <div class="bg-gray-100 p-3 rounded-lg shadow-inner">
+          <span class="font-medium">Model load time:</span>
+          <span class="font-semibold">{{ modelLoadTimeMs | number:'1.0-1' }} ms</span>
+        </div>
+        <div class="bg-gray-100 p-3 rounded-lg shadow-inner">
+          <span class="font-medium">Last inference time:</span>
+          <span class="font-semibold">{{ lastInferenceMs | number:'1.0-1' }} ms</span>
+        </div>
+      </div>
+
+      <div *ngIf="imageUrl" class="mt-6 flex justify-center">
+        <div class="relative">
+          <img
+            #imageEl
+            [src]="imageUrl"
+            alt="Satellite view"
+            class="rounded-2xl shadow-2xl"
+            (load)="onImageLoad()"
+          />
+          <canvas
+            #overlay
+            *ngIf="imageReady"
+            class="overlay-canvas absolute inset-0 rounded-2xl"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

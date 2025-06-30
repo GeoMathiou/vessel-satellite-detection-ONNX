@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { env } from 'onnxruntime-web';
 
 interface TokenResponse {
   access_token: string;
@@ -12,7 +13,7 @@ interface TokenResponse {
 export class AuthService {
   private readonly TOKEN_URL = '/auth-proxy/auth/realms/CDSE/protocol/openid-connect/token';
   private accessToken: string | null = null;
-  private expTime: number = 0;  // ms since epoch
+  private expTime: number = 0; 
 
   constructor(private http: HttpClient) {}
 
@@ -34,8 +35,8 @@ export class AuthService {
     try {
       const resp = await this.http
         .post<TokenResponse>(
-          'http://localhost:4200/auth-proxy/auth/realms/CDSE/protocol/openid-connect/token',
-          body.toString(), // key change: use .toString() here
+          environment.authTokenUrl || this.TOKEN_URL, // use environment variable or default URL
+          body.toString(), 
           { headers }
         )
         .toPromise();

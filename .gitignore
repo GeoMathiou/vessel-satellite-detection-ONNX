@@ -6,6 +6,32 @@
 /out-tsc
 /bazel-out
 
+# === Python / Virtualenv ===
+venv/
+__pycache__/
+*.pyc
+
+# === YOLOv5 Outputs ===
+yolov5/
+ship.pt                     # ignore large final checkpoint (optional)
+
+# === Data Folder ===
+data/
+
+# === Angular Build Artifacts ===
+node_modules/
+.angular/                   # Angular CLI cache
+dist/
+
+# === OS / Editor files ===
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+
+# === Miscellaneous ===
+model-api/outputs/          # (if you store any exports here)
+
 # Node
 /node_modules
 npm-debug.log

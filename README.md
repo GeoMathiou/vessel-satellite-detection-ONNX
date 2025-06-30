@@ -2,26 +2,46 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
 
-## Development server
+## Training:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Train was made with command:
+python train.py \
+  --img 640 \
+  --batch 8 \
+  --epochs 50 \
+  --data ../data/ships.yaml \
+  --cfg models/yolov5s.yaml \
+  --weights yolov5s.pt \
+  --hyp ../data/hyps/low-hyp.yaml \
+  --device 0 \
+  --workers 2
 
-## Code scaffolding
+--img 640 – input image size of 640×640
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+--batch 8 – batch size of 8 (fits in 6 GB VRAM)
 
-## Build
+--epochs 50 – train for 50 epochs
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+--data ../data/ships.yaml – your dataset config (train/val paths)
 
-## Running unit tests
+--cfg models/yolov5s.yaml – YOLOv5s architecture
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+--weights yolov5s.pt – start from the COCO-pretrained YOLOv5s checkpoint
 
-## Running end-to-end tests
+--hyp ../data/hyps/low-hyp.yaml – your custom hyperparameters (lr0 = 0.001, mosaic = 0, etc.)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+--device 0 – use GPU 0 (your GTX 1660 Ti)
 
-## Further help
+--workers 2 – two data‐loading workers (to keep the GPU fed)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Notes
+
+--Added in train.py -> os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+## Export to ONNX
+
+python export.py \
+  --weights ../ship.pt \
+  --img 640 \
+  --batch 1 \
+  --include onnx
