@@ -2,6 +2,13 @@
 
 A simple browser app that detects ships in satellite imagery using an ONNX-exported YOLOv5 model.
 
+## Live Demo
+
+Check out a quick walkthrough of the site:
+
+[![Watch the demo video](https://img.youtube.com/vi/MBDnOt4wJqg/0.jpg)](https://youtu.be/MBDnOt4wJqg)
+
+
 ## Prerequisites
 
 - Git
