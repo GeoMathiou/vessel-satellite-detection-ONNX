@@ -1,47 +1,64 @@
-# SatelliteImageIdentification
+# Ship Detection App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+A simple browser app that detects ships in satellite imagery using an ONNX-exported YOLOv5 model.
 
-## Training:
+## Prerequisites
 
-Train was made with command:
-python train.py \
-  --img 640 \
-  --batch 8 \
-  --epochs 50 \
-  --data ../data/ships.yaml \
-  --cfg models/yolov5s.yaml \
-  --weights yolov5s.pt \
-  --hyp ../data/hyps/low-hyp.yaml \
-  --device 0 \
-  --workers 2
+- Git
+- Node.js (v16+) & npm
+- Angular CLI (v13+)
+- Modern browser (Chrome/Firefox/Edge)
 
---img 640 – input image size of 640×640
+## Setup & Run
 
---batch 8 – batch size of 8 (fits in 6 GB VRAM)
+```bash
+git clone <repo-url>
+cd ship-detection-app
+npm install        # installs dependencies
+npx ng serve --open  # uses project’s local Angular CLI
+```
 
---epochs 50 – train for 50 epochs
+The app will open at `http://localhost:4200/`.
 
---data ../data/ships.yaml – your dataset config (train/val paths)
+## Configuration
 
---cfg models/yolov5s.yaml – YOLOv5s architecture
+- **Copernicus API** *(optional)*: copy `src/environments/environment.ts.example` to `environment.ts` and add your credentials. Without it, use local test images.
 
---weights yolov5s.pt – start from the COCO-pretrained YOLOv5s checkpoint
+## Local Test Images
 
---hyp ../data/hyps/low-hyp.yaml – your custom hyperparameters (lr0 = 0.001, mosaic = 0, etc.)
+In the UI, choose **Test Image** and pick any sample (`test1.png`, `test2.jpg`, etc.) to see detections.
 
---device 0 – use GPU 0 (your GTX 1660 Ti)
+## (Optional) Retrain Model
 
---workers 2 – two data‐loading workers (to keep the GPU fed)
+If you'd like to retrain or fine‑tune the YOLOv5 model and generate a fresh ONNX file, follow these steps:
 
-## Notes
+1. **Clone the YOLOv5 repo**
 
---Added in train.py -> os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+   ```bash
+   git clone https://github.com/ultralytics/yolov5.git
+   cd yolov5
+   ```
 
-## Export to ONNX
+2. **Prepare the LEVIR‑Ship dataset**
 
-python export.py \
-  --weights ../ship.pt \
-  --img 640 \
-  --batch 1 \
-  --include onnx
+   ```bash
+   git clone https://github.com/WindVChen/LEVIR-Ship.git
+   ```
+
+   Follow the instructions in `LEVIR-Ship/README.md` to organize images and labels.
+
+3. **Install Python dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Train & export to ONNX**
+
+   ```bash
+   python train.py --data LEVIR-Ship/data/levir-ship.yaml --cfg yolov5s.yaml --epochs 100
+   python export.py --weights runs/train/exp/weights/best.pt --include onnx
+   ```
+
+---
+
